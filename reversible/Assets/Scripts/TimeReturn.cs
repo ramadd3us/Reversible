@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,46 +6,52 @@ using UnityEngine;
 public class TimeReturn : MonoBehaviour
 {
     [SerializeField] private GameObject _person;
-    [SerializeField] private int reverseLimit = 10;
+    [SerializeField] private int reverseLimit = 5;
     private List<List<Vector3>> _objectPosition = new List<List<Vector3>>();
-    
-    //private ArrayList _personPositions;
+    private List<int> _timeToStart = new List<int> {0};
+
+    private List<int> _timeToEnd = new List<int>();
+
+    //private float _timeToStart = 0;
     private List<GameObject> _dublicates;
+
     private bool _isReversing = false;
 
     private int _reverseCounter = 0;
+
     void Start()
     {
-        //_objectPosition = 
+        //_timeToStart[_reverseCounter] = TimeCounter.RewindTimer;
         for (int i = 0; i < reverseLimit; i++)
         {
             _objectPosition.Add(new List<Vector3>());
+            _timeToStart.Add(0);
         }
-        //_personPositions = new ArrayList();
-        
-        Debug.Log(_objectPosition[0]);
+
+        _timeToStart.Add(0);
         _dublicates = new List<GameObject>();
-        Debug.Log(_reverseCounter);
     }
-    
+
     void Update()
     {
         if (_reverseCounter < reverseLimit)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
+                _timeToStart[_reverseCounter + 1] = TimeCounter.RewindTimer;
+
                 _dublicates.Add(Instantiate(_person));
-                if (_reverseCounter % 2 == 0)//четное
+
+                if (_reverseCounter % 2 == 0) //четное
                 {
                     if (_reverseCounter > 0)
                     {
                         for (int i = _reverseCounter; i >= 0; i -= 2)
                         {
                             var temp = new Color(1f, 0f, 0f,
-                                _dublicates[i].GetComponent<Renderer>().material.color.a - 0.1f);
-                            
-                            _dublicates[i].GetComponent<Renderer>().material.SetColor("_Color", temp);
+                                _dublicates[i].GetComponent<Renderer>().material.color.a - 0.2f);
 
+                            _dublicates[i].GetComponent<Renderer>().material.SetColor("_Color", temp);
                         }
                     }
                     else
@@ -63,10 +70,9 @@ public class TimeReturn : MonoBehaviour
                         for (int i = _reverseCounter; i > 0; i -= 2)
                         {
                             var temp = new Color(0f, 0f, 1f,
-                                _dublicates[i].GetComponent<Renderer>().material.color.a - 0.1f);
-                            
-                            _dublicates[i].GetComponent<Renderer>().material.SetColor("_Color", temp);
+                                _dublicates[i].GetComponent<Renderer>().material.color.a - 0.2f);
 
+                            _dublicates[i].GetComponent<Renderer>().material.SetColor("_Color", temp);
                         }
                     }
                     else
@@ -84,41 +90,32 @@ public class TimeReturn : MonoBehaviour
             }
         }
     }
-    
+
     void FixedUpdate()
     {
-        if(_reverseCounter < reverseLimit)
-            _objectPosition[_reverseCounter].Add (_person.transform.position);
-        Debug.Log(_reverseCounter);
-        if(!_isReversing)//Нечетное
+        var time = TimeCounter.RewindTimer;
+        if (_reverseCounter < reverseLimit)
         {
-            //здесь for для 
-            
-            
-            if (_reverseCounter > 0)
+            _objectPosition[_reverseCounter].Add(_person.transform.position);
+        }
+        
+        for (var i = 0; i < _dublicates.Count; i++)
+        {
+            if (i % 2 == 0)
             {
-                if(_objectPosition[_reverseCounter - 1].Count - 1 > -1)
+                if ((time <= _timeToStart[i + 1]) && (time >= _timeToStart[i]))
                 {
-                    for (int i = 0; i >= _reverseCounter - 1; i ++)
-                    {
-                        _dublicates[i].transform.position = _objectPosition[i][_objectPosition[i].Count - 1];
-                        
-                    }
-                    _objectPosition[_reverseCounter - 1].RemoveAt(_objectPosition[_reverseCounter - 1].Count - 1);
+                    var a = time - _timeToStart[i];
+                    var b = _objectPosition[i][a];
+                    _dublicates[i].transform.position = b;
                 }
             }
-        }
-        else //Четное
-        {
-            //здесь for для 
-            
-            if (_objectPosition[_reverseCounter - 1].Count - 1 > -1)
+            else
             {
-                for (int i = _reverseCounter - 1; i > 0 ; i --)
+                if ((time >= _timeToStart[i + 1]) && (time <= _timeToStart[i]))
                 {
-                    _dublicates[i].transform.position = _objectPosition[i][_objectPosition[i].Count - 1];
+                    _dublicates[i].transform.position = _objectPosition[i][time - _timeToStart[i + 1]];
                 }
-                _objectPosition[_reverseCounter - 1].RemoveAt(_objectPosition[_reverseCounter - 1].Count - 1);
             }
         }
     }

@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class TimeCounter : MonoBehaviour
 {
-    public float elapsedRunningTime = 0f;
-    public float rewindTimer = 0;
+    public int elapsedRunningTime;
+    public static int RewindTimer = 0;
+    public static float TimerReverse = 0;
     private int counterReverse;
     
     private float runningStartTime = 0f;
@@ -20,18 +21,21 @@ public class TimeCounter : MonoBehaviour
 
     public void ReverseTime(int reverseCounter)
     {
+        TimerReverse = RewindTimer;
         counterReverse = reverseCounter;
     }
 
-    void Update()
+    public float GetRewindTimer()
+    {
+        return RewindTimer;
+    }
+
+    void FixedUpdate()
     {
         if (running)
         {
-            elapsedRunningTime = Time.time - runningStartTime - totalElapsedPausedTime;
-            
-            rewindTimer += (float)(Math.Pow(-1,counterReverse)*Time.deltaTime);
-            //Debug.Log(rewindTimer);
-            //if(elapsedRunningTime > 10) Pause();
+            elapsedRunningTime++;
+            RewindTimer += (int)(Math.Pow(-1,counterReverse));
         }
         else if (paused)
         {
@@ -70,7 +74,7 @@ public class TimeCounter : MonoBehaviour
   
     public void Reset()
     {
-        elapsedRunningTime = 0f;
+        elapsedRunningTime = 0;
         runningStartTime = 0f;
         pauseStartTime = 0f;
         elapsedPausedTime = 0f;
@@ -89,10 +93,7 @@ public class TimeCounter : MonoBehaviour
         return (int)(elapsedRunningTime);
     }
   
-    public float GetMilliseconds()
-    {
-        return (float)(elapsedRunningTime - System.Math.Truncate(elapsedRunningTime));
-    }
+ 
  
     public float GetRawElapsedTime()
     {
