@@ -1674,3 +1674,31 @@ Received Import Request.
 Start importing Assets/Scenes/lvl3.unity using Guid(0346695010a27cc4994e9ae286ac3d6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '368b5a06e767fe74eaad1bd1789c5f04') in 0.009929 seconds
   Import took 0.012632 seconds .
 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.000512 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.22 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.665 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.22 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1116 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 61.4 MB.
+System memory in use after: 61.5 MB.
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 1769.
+Total: 2.599600 ms (FindLiveObjects: 0.213500 ms CreateObjectMapping: 0.049100 ms MarkObjects: 2.275200 ms  DeleteObjects: 0.060200 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 1517.259719 seconds.
+  path: Assets/Scenes/lvl3.unity
+  artifactKey: Guid(0346695010a27cc4994e9ae286ac3d6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/lvl3.unity using Guid(0346695010a27cc4994e9ae286ac3d6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24ef89d887eff401472e7f4c7f3b62a8') in 0.010425 seconds
+  Import took 0.012613 seconds .
+
