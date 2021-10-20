@@ -9,10 +9,7 @@ public class TimeReturn : MonoBehaviour
     [SerializeField] private int reverseLimit = 5;
     private List<List<Vector3>> _objectPosition = new List<List<Vector3>>();
     private List<int> _timeToStart = new List<int> {0};
-
     private List<int> _timeToEnd = new List<int>();
-
-    //private float _timeToStart = 0;
     private List<GameObject> _dublicates;
 
     private bool _isReversing = false;
@@ -21,7 +18,6 @@ public class TimeReturn : MonoBehaviour
 
     void Start()
     {
-        //_timeToStart[_reverseCounter] = TimeCounter.RewindTimer;
         for (int i = 0; i < reverseLimit; i++)
         {
             _objectPosition.Add(new List<Vector3>());
@@ -42,7 +38,7 @@ public class TimeReturn : MonoBehaviour
 
                 _dublicates.Add(Instantiate(_person));
 
-                if (_reverseCounter % 2 == 0) //четное
+                if (_reverseCounter % 2 == 0)
                 {
                     if (_reverseCounter > 0)
                     {
@@ -63,7 +59,7 @@ public class TimeReturn : MonoBehaviour
                     _isReversing = true;
                     _person.GetComponent<Renderer>().material.color = Color.blue;
                 }
-                else //Нечетное
+                else
                 {
                     if (_reverseCounter > 1)
                     {
@@ -80,11 +76,9 @@ public class TimeReturn : MonoBehaviour
                         var temp = new Color(0f, 0f, 1f, 0.8f);
                         _dublicates[_reverseCounter].GetComponent<Renderer>().material.SetColor("_Color", temp);
                     }
-
                     _isReversing = false;
                     _person.GetComponent<Renderer>().material.color = Color.red;
                 }
-
                 _reverseCounter++;
                 GetComponent<TimeCounter>().ReverseTime(_reverseCounter);
             }
@@ -107,6 +101,14 @@ public class TimeReturn : MonoBehaviour
                 {
                     var a = time - _timeToStart[i];
                     var b = _objectPosition[i][a];
+                    if (a == _objectPosition[i].Count - 1)
+                    {
+                        _dublicates[i].SetActive(false);
+                    }
+                    else
+                    {
+                        _dublicates[i].SetActive(true);
+                    }
                     _dublicates[i].transform.position = b;
                 }
             }
@@ -115,8 +117,18 @@ public class TimeReturn : MonoBehaviour
                 if (time > _timeToStart[i + 1] && time <= _timeToStart[i])
                 {
                     var a = time - _timeToStart[i + 1];
-                    var b = _objectPosition[i][_objectPosition[i].Count - a];
-                    _dublicates[i].transform.position = b;
+                    var b = _objectPosition[i].Count - a;
+                    var c = _objectPosition[i][b];
+                    if (b == 0)
+                    {
+                        _dublicates[i].SetActive(false);
+                    }
+                    else
+                    {
+                        _dublicates[i].SetActive(true);
+                    }
+
+                    _dublicates[i].transform.position = c;
                 }
             }
         }
