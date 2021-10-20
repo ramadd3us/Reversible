@@ -7,11 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class NextScene : MonoBehaviour
 {
-    public static int lvl = 0;
-
+    private static int lvlLimit = 5;
+    private static int _lvl = 0;
     private void OnTriggerEnter(Collider other)
     {
-        lvl++;
-        SceneManager.LoadScene(lvl);
+        GameObject.Find("TimeController").GetComponent<TimeCounter>().Reset();
+        _lvl++;
+        if(_lvl < lvlLimit)
+            SceneManager.LoadScene(_lvl);
+        if (_lvl == lvlLimit)
+            SceneManager.LoadScene(lvlLimit);
     }
 }

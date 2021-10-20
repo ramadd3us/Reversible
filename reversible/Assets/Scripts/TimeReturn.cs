@@ -9,7 +9,6 @@ public class TimeReturn : MonoBehaviour
     [SerializeField] private int reverseLimit = 5;
     private List<List<Vector3>> _objectPosition = new List<List<Vector3>>();
     private List<int> _timeToStart = new List<int> {0};
-    private List<int> _timeToEnd = new List<int>();
     private List<GameObject> _dublicates;
 
     private bool _isReversing = false;
@@ -23,8 +22,6 @@ public class TimeReturn : MonoBehaviour
             _objectPosition.Add(new List<Vector3>());
             _timeToStart.Add(0);
         }
-
-        _timeToStart.Add(0);
         _dublicates = new List<GameObject>();
     }
 
@@ -99,6 +96,7 @@ public class TimeReturn : MonoBehaviour
             {
                 if (time < _timeToStart[i + 1] && time >= _timeToStart[i])
                 {
+                    Debug.Log(time);
                     var a = time - _timeToStart[i];
                     var b = _objectPosition[i][a];
                     if (a == _objectPosition[i].Count - 1)
@@ -127,7 +125,6 @@ public class TimeReturn : MonoBehaviour
                     {
                         _dublicates[i].SetActive(true);
                     }
-
                     _dublicates[i].transform.position = c;
                 }
             }

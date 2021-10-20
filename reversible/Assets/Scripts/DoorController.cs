@@ -6,13 +6,11 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     [SerializeField] private Animator anim;
-    private float LastTime;
+    private int LastTime;
     private int Counter = 0;
 
     private void Start()
     {
-        
-        
         anim.SetBool("SetDoorOpen", true);
     }
 
@@ -24,31 +22,27 @@ public class DoorController : MonoBehaviour
             CloseTheDoor();
             Counter++;
         }
-        
-       
     }
 
     private void FixedUpdate()
     {
+        var time = TimeCounter.RewindTimer;
         if (Counter > 0)
         {
-            if (TimeCounter.TimerReverse > TimeCounter.RewindTimer) //Время идет вспять
-                
-                if (TimeCounter.RewindTimer <= LastTime + 0.5f)
+            if (TimeCounter.TimerReverse > time)
+
+                if (time <= LastTime + 50)
                 {
                     OpenTheDoor();
                 }
 
-            if (TimeCounter.TimerReverse < TimeCounter.RewindTimer) //Время идет вперед
-               
-                if (TimeCounter.RewindTimer >= LastTime - 0.5f)
+            if (TimeCounter.TimerReverse < time)
+
+                if (time >= LastTime - 50)
                 {
                     CloseTheDoor();
                 }
-
         }
-        
-     //   Debug.Log(LastTime);
     }
 
     private void OpenTheDoor()

@@ -7,7 +7,7 @@ public class TimeCounter : MonoBehaviour
 {
     public int elapsedRunningTime;
     public static int RewindTimer = 0;
-    public static float TimerReverse = 0;
+    public static int TimerReverse = 0;
     private int counterReverse;
     
     private float runningStartTime = 0f;
@@ -74,6 +74,7 @@ public class TimeCounter : MonoBehaviour
   
     public void Reset()
     {
+        RewindTimer = 0;
         elapsedRunningTime = 0;
         runningStartTime = 0f;
         pauseStartTime = 0f;
