@@ -98,12 +98,12 @@ public class TimeReturn : MonoBehaviour
         {
             _objectPosition[_reverseCounter].Add(_person.transform.position);
         }
-        
+
         for (var i = 0; i < _dublicates.Count; i++)
         {
             if (i % 2 == 0)
             {
-                if ((time <= _timeToStart[i + 1]) && (time >= _timeToStart[i]))
+                if (time < _timeToStart[i + 1] && time >= _timeToStart[i])
                 {
                     var a = time - _timeToStart[i];
                     var b = _objectPosition[i][a];
@@ -112,9 +112,11 @@ public class TimeReturn : MonoBehaviour
             }
             else
             {
-                if ((time >= _timeToStart[i + 1]) && (time <= _timeToStart[i]))
+                if (time > _timeToStart[i + 1] && time <= _timeToStart[i])
                 {
-                    _dublicates[i].transform.position = _objectPosition[i][time - _timeToStart[i + 1]];
+                    var a = time - _timeToStart[i + 1];
+                    var b = _objectPosition[i][_objectPosition[i].Count - a];
+                    _dublicates[i].transform.position = b;
                 }
             }
         }

@@ -752,7 +752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _person: {fileID: 1879609590}
-  reverseLimit: 4
+  reverseLimit: 6
 --- !u!4 &681782465
 Transform:
   m_ObjectHideFlags: 0
