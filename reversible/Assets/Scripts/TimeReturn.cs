@@ -2,21 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimeReturn : MonoBehaviour
 {
     [SerializeField] private GameObject _person;
     [SerializeField] private int reverseLimit = 5;
+    [SerializeField] private Text reverseLimitText;
+    [SerializeField] private Button reverseLimitUI;
     private List<List<Vector3>> _objectPosition = new List<List<Vector3>>();
     private List<int> _timeToStart = new List<int> {0};
     private List<GameObject> _dublicates;
-
     private bool _isReversing = false;
-
     private int _reverseCounter = 0;
+    
 
     void Start()
     {
+        reverseLimitText.text = reverseLimit.ToString();
+        reverseLimitUI.image.color = new Color(1f, 0.16f, 0.18f);
+        reverseLimitText.color = new Color(1f, 0.16f, 0.18f);
         for (int i = 0; i < reverseLimit; i++)
         {
             _objectPosition.Add(new List<Vector3>());
@@ -31,6 +36,7 @@ public class TimeReturn : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
+                
                 _timeToStart[_reverseCounter + 1] = TimeCounter.RewindTimer;
 
                 _dublicates.Add(Instantiate(_person));
@@ -41,10 +47,19 @@ public class TimeReturn : MonoBehaviour
                     {
                         for (int i = _reverseCounter; i >= 0; i -= 2)
                         {
-                            var temp = new Color(1f, 0f, 0f,
-                                _dublicates[i].GetComponent<Renderer>().material.color.a - 0.2f);
+                            Color temp;
+                            if (_dublicates[i].GetComponent<Renderer>().material.color.a > 0.1f)
+                            {
+                                temp = new Color(1f, 0f, 0f,
+                                    _dublicates[i].GetComponent<Renderer>().material.color.a - 0.2f);
+                            }
+                            else
+                            {
+                                temp = new Color(1f, 0f, 0f, 0.1f);
+                            }
 
                             _dublicates[i].GetComponent<Renderer>().material.SetColor("_Color", temp);
+                            
                         }
                     }
                     else
@@ -54,6 +69,8 @@ public class TimeReturn : MonoBehaviour
                     }
 
                     _isReversing = true;
+                    reverseLimitUI.image.color = new Color(0.2f, 0.27f, 1f);
+                    reverseLimitText.color = new Color(0.2f, 0.27f, 1f);
                     _person.GetComponent<Renderer>().material.color = Color.blue;
                 }
                 else
@@ -62,10 +79,19 @@ public class TimeReturn : MonoBehaviour
                     {
                         for (int i = _reverseCounter; i > 0; i -= 2)
                         {
-                            var temp = new Color(0f, 0f, 1f,
-                                _dublicates[i].GetComponent<Renderer>().material.color.a - 0.2f);
+                            Color temp;
+                            if (_dublicates[i].GetComponent<Renderer>().material.color.a > 0.1f)
+                            {
+                                temp = new Color(0f, 0f, 1f,
+                                    _dublicates[i].GetComponent<Renderer>().material.color.a - 0.2f);
+                            }
+                            else
+                            {
+                                temp = new Color(0f, 0f, 1f, 0.1f);
+                            }
 
                             _dublicates[i].GetComponent<Renderer>().material.SetColor("_Color", temp);
+                            
                         }
                     }
                     else
@@ -74,9 +100,12 @@ public class TimeReturn : MonoBehaviour
                         _dublicates[_reverseCounter].GetComponent<Renderer>().material.SetColor("_Color", temp);
                     }
                     _isReversing = false;
+                    reverseLimitUI.image.color = new Color(1f, 0.16f, 0.18f);
+                    reverseLimitText.color = new Color(1f, 0.16f, 0.18f);
                     _person.GetComponent<Renderer>().material.color = Color.red;
                 }
                 _reverseCounter++;
+                reverseLimitText.text = (reverseLimit - _reverseCounter).ToString();
                 GetComponent<TimeCounter>().ReverseTime(_reverseCounter);
             }
         }
